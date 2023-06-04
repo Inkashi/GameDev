@@ -9,7 +9,6 @@ public class HeroMovement : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private int lives = 100;
     [SerializeField] private float jumpForce = 2f;
-
     private bool onGround = false;
 
     private Animator anim;
@@ -25,6 +24,8 @@ public class HeroMovement : MonoBehaviour
     public LayerMask Enemy;
     public int damage = 1;
 
+    public float DashImpulse = 10f;
+    public KeyCode dashKey = KeyCode.LeftShift;
     private void FixedUpdate()
     {
         CheckSky();
@@ -32,15 +33,22 @@ public class HeroMovement : MonoBehaviour
 
     private void Update()
     {
+        
         if (onGround) State = States.idle;
         if (Input.GetButton("Horizontal"))
             Run();
         if (Input.GetButtonDown("Jump") && onGround)
             Jump();
         if (tranform.position.y < -10)
-            Respawn();
+            Respawn();  
         if (Input.GetButtonDown("Fire1"))
             Attack();
+        if (Input.GetKeyDown(dashKey))
+        {
+           
+            float dashDirection = Mathf.Sign(Input.GetAxis("Horizontal"));
+            rb.AddForce(new Vector2(dashDirection * DashImpulse, 0f), ForceMode2D.Impulse);
+        }
     }
     private States State
     {
@@ -55,6 +63,7 @@ public class HeroMovement : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         tranform = GetComponent<Transform>();
         Recharged = true;
+        attackPos = GetComponent<Transform>();
     }
 
     private void Run()
@@ -63,6 +72,7 @@ public class HeroMovement : MonoBehaviour
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
+        
     }
 
     private void Jump()
@@ -95,6 +105,15 @@ public class HeroMovement : MonoBehaviour
 
     private void OnAttack()
     {
+         Vector2 attackPosition = attackPos.position;
+        if (!sprite.flipX)
+        {
+            attackPosition.x -= attackRange;
+        }
+        else
+        {
+            attackPosition.x += attackRange;
+        }
         Collider2D[] Enemyes = Physics2D.OverlapCircleAll(attackPos.position, attackRange, Enemy);
         foreach (Collider2D enemy in Enemyes)
         {
@@ -105,7 +124,7 @@ public class HeroMovement : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 
@@ -119,9 +138,23 @@ public class HeroMovement : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Recharged = true;
     }
+     private void Dash()
+    {
+        anim.StopPlayback();
+        State = States.Dash;
+        rb.velocity = new Vector2(0,0);
+        if (sprite.flipX) 
+        {
+        rb.AddForce(Vector2.left * DashImpulse, ForceMode2D.Impulse);
+        }
+        else {
+        rb.AddForce(Vector2.right * DashImpulse, ForceMode2D.Impulse);
+        }
+    }
+ 
 }
 
 public enum States
 {
-    idle, run, jump,
+    idle, run, jump, Dash
 }

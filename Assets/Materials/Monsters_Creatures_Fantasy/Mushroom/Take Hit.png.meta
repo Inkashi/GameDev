@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 39a6ee29025756e4e974594c24c67b5a
+guid: 49caedded87449247bdf08615e63345a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -105,13 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: _Dash_0
+      name: Take Hit_0
       rect:
         serializedVersion: 2
-        x: 41
-        y: 1
-        width: 33
-        height: 34
+        x: 64
+        y: 49
+        width: 23
+        height: 37
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -119,20 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cfebf93569403cb47ad4fbcebf7ffc84
-      internalID: -43880502
+      spriteID: 922752c131afa5442a0d6b547eab9d38
+      internalID: 1127948187
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _Dash_1
+      name: Take Hit_1
       rect:
         serializedVersion: 2
-        x: 161
-        y: 1
-        width: 33
-        height: 34
+        x: 214
+        y: 49
+        width: 23
+        height: 37
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +140,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 39e3d1a86bdd7a84997be457fac1308b
-      internalID: -739243541
+      spriteID: ae4996e84d0242a42b231be246272535
+      internalID: 140387320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Take Hit_2
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 49
+        width: 37
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8f41455dff9379459d90cb03fd82eab
+      internalID: -1513484821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Take Hit_3
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 49
+        width: 34
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79c70519c3769364ea5fed77c4af43cc
+      internalID: 1082507917
       vertices: []
       indices: 
       edges: []
@@ -157,8 +199,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      _Dash_0: -43880502
-      _Dash_1: -739243541
+      Take Hit_0: 1127948187
+      Take Hit_1: 140387320
+      Take Hit_2: -1513484821
+      Take Hit_3: 1082507917
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
