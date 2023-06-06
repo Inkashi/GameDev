@@ -1,59 +1,69 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class HeroMovement : MonoBehaviour
 {
-    [SerializeField] private float speed = 3f;
-    [SerializeField] private int lives = 100;
-    [SerializeField] private float jumpForce = 2f;
-    private bool onGround = false;
+    [Header("InitHeroStats")]
+    public float speed = 3f;
+    public float jumpForce = 2f;
+    public int health = 100;
+    public int damage = 25;
+    public float attackRange;
+    public int pointsCount = 0;
+    public float DashImpulse = 10f;
 
+    [Header("InitObjects")]
+    public TextMeshProUGUI PointDisplay;
+    public GameObject Alarm;
+    public GameObject statsMenu;
+    public Transform attackPos;
+    public Slider slider;
+    public LayerMask Enemy;
+    public KeyCode dashKey = KeyCode.LeftShift;
+
+    //��������� ��������
     private Animator anim;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Transform tranform;
-    public Transform attackPos;
-
     private bool Attacking = false;
     private bool Recharged = true;
+    private bool onGround = false;
+    public bool Archontnear = false;
+    private bool Dashcharged = true;
 
-    public float attackRange;
-    public LayerMask Enemy;
-    public int damage = 1;
+	public bool isFlipped = true;
 
-    public float DashImpulse = 10f;
-    public KeyCode dashKey = KeyCode.LeftShift;
+    private void Start()
+    {
+        SetMaxHealth(health);
+    }
     private void FixedUpdate()
     {
         CheckSky();
     }
-
     private void Update()
     {
-        
+        SetHealth(health);
         if (onGround) State = States.idle;
         if (Input.GetButton("Horizontal"))
             Run();
         if (Input.GetButtonDown("Jump") && onGround)
             Jump();
         if (tranform.position.y < -10)
-            Respawn();  
+            Respawn();
         if (Input.GetButtonDown("Fire1"))
             Attack();
+        if (Input.GetKeyDown(KeyCode.E) && Archontnear == true)
+        {
+            statsMenu.SetActive(true);
+        }
         if (Input.GetKeyDown(dashKey))
         {
-           
-            float dashDirection = Mathf.Sign(Input.GetAxis("Horizontal"));
-            rb.AddForce(new Vector2(dashDirection * DashImpulse, 0f), ForceMode2D.Impulse);
+            Dash();
         }
-    }
-    private States State
-    {
-        get { return (States)anim.GetInteger("State"); }
-        set { anim.SetInteger("State", (int)value); }
     }
 
     private void Awake()
@@ -63,7 +73,7 @@ public class HeroMovement : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         tranform = GetComponent<Transform>();
         Recharged = true;
-        attackPos = GetComponent<Transform>();
+        
     }
 
     private void Run()
@@ -71,8 +81,25 @@ public class HeroMovement : MonoBehaviour
         if (onGround) State = States.run;
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
-        sprite.flipX = dir.x < 0.0f;
+
         
+		
+        if (Input.GetAxis("Horizontal") > 0 && !isFlipped)
+		{
+            Flip();
+		}
+		else if (Input.GetAxis("Horizontal") < 0 && isFlipped) 
+		{
+           Flip();
+		}
+    }
+    private void Flip()
+    {
+        isFlipped = !isFlipped;
+        Vector3 theScale =transform.localScale;
+        theScale.x *=-1;
+        tranform.localScale = theScale;
+
     }
 
     private void Jump()
@@ -86,9 +113,17 @@ public class HeroMovement : MonoBehaviour
         onGround = collider.Length > 1;
         if (!onGround) State = States.jump;
     }
-    private void Respawn()
+
+    private void OnAttack()
     {
-        tranform.position = new Vector3(0, 0, 0);
+        Vector2 attackPosition = attackPos.position;
+       
+        Collider2D[] Enemyes = Physics2D.OverlapCircleAll(attackPos.position, attackRange, Enemy);
+        foreach (Collider2D enemy in Enemyes)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(damage);
+            Debug.Log("Eneme has " + enemy.GetComponent<Enemy>().health);
+        }
     }
     private void Attack()
     {
@@ -102,30 +137,61 @@ public class HeroMovement : MonoBehaviour
             StartCoroutine(AttackCoolDown());
         }
     }
-
-    private void OnAttack()
+    private void Respawn()
     {
-         Vector2 attackPosition = attackPos.position;
-        if (!sprite.flipX)
+        tranform.position = new Vector3(0, 0, 0);
+    }
+    public void TakeDamage(int damage)
+    {
+
+        health -= damage;
+        Debug.Log(health);
+
+        if (health <= 0)
         {
-            attackPosition.x -= attackRange;
+            Die();
         }
-        else
+    }
+    void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    private void Dash()
+    {
+        if (Dashcharged)
         {
-            attackPosition.x += attackRange;
+            anim.StopPlayback();
+            anim.SetTrigger("Dash");
+            rb.velocity = new Vector2(0, 0);
+            if (!isFlipped)
+            {
+                rb.AddForce(Vector2.left * DashImpulse, ForceMode2D.Impulse);
+            }
+            else
+            {
+                rb.AddForce(Vector2.right * DashImpulse, ForceMode2D.Impulse);
+            }
+
+            Dashcharged = false;
+            StartCoroutine(DashCoolDown());
         }
-        Collider2D[] Enemyes = Physics2D.OverlapCircleAll(attackPos.position, attackRange, Enemy);
-        foreach (Collider2D enemy in Enemyes)
-        {
-            enemy.GetComponent<Enemy>().TakeDamage(damage);
-            Debug.Log("Eneme has " + enemy.GetComponent<Enemy>().health);
-        }
+    }
+    private States State
+    {
+        get { return (States)anim.GetInteger("State"); }
+        set { anim.SetInteger("State", (int)value); }
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
+    }
+    public void SetMaxHealth(int health)
+    {
+        slider.maxValue = health;
+        slider.value = health;
     }
 
     private IEnumerator AttackAnimation()
@@ -138,23 +204,51 @@ public class HeroMovement : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Recharged = true;
     }
-     private void Dash()
+
+    private IEnumerator DashCoolDown()
     {
-        anim.StopPlayback();
-        State = States.Dash;
-        rb.velocity = new Vector2(0,0);
-        if (sprite.flipX) 
+        yield return new WaitForSeconds(1f);
+        Dashcharged = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        switch (other.tag)
         {
-        rb.AddForce(Vector2.left * DashImpulse, ForceMode2D.Impulse);
-        }
-        else {
-        rb.AddForce(Vector2.right * DashImpulse, ForceMode2D.Impulse);
+            case "point":
+                PlayerPrefs.GetInt("points");
+                pointsCount += 1;
+                PlayerPrefs.SetInt("points", pointsCount);
+                PointDisplay.text = pointsCount.ToString();
+                Destroy(other.gameObject);
+                break;
+            case "healthPotion":
+                health += 20;
+                Destroy(other.gameObject);
+                break;
+            case "Archont":
+                Alarm.SetActive(true);
+                Archontnear = true;
+                break;
+
         }
     }
- 
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Archont"))
+        {
+            Alarm.SetActive(false);
+            Archontnear = false;
+        }
+    }
+    public void SetHealth(int health)
+    {
+        slider.value = health;
+    }
 }
 
 public enum States
 {
-    idle, run, jump, Dash
+    idle, run, jump,
 }

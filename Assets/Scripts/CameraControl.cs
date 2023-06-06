@@ -8,7 +8,7 @@ public class CameraControl : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private string playerTag;
     [SerializeField] private float movingSpeed;
-
+    [SerializeField] private float camypos;
     private void Awake()
     {
         if (this.playerTransform == null)
@@ -37,7 +37,7 @@ public class CameraControl : MonoBehaviour
             Vector3 targer = new Vector3()
             {
                 x = this.playerTransform.position.x,
-                y = this.playerTransform.position.y,
+                y = this.playerTransform.position.y - camypos,
                 z = this.playerTransform.position.z - 10,
             };
 
