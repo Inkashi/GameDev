@@ -23,7 +23,7 @@ public class HeroMovement : MonoBehaviour
     public bool DashAccses = false;
     public bool DoubleJumpAccses = false;
 
-    //Приватные элементы
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     private Animator anim;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
@@ -107,6 +107,10 @@ public class HeroMovement : MonoBehaviour
 
     private void Jump()
     {
+        if(DoubleJumpCharged >0)
+         {
+            anim.SetTrigger("doubleJump");
+        }
         DoubleJumpCharged--;
         rb.velocity = new Vector2(0.0f, jumpForce);
 

@@ -5,20 +5,21 @@ using UnityEngine;
 public class Mush : StateMachineBehaviour
 {
 
-	public float speed = 2.5f;
+	public float speed = 1.2f;
 	public float attackRange = 0.3f;
 
 	Transform player;
 	Rigidbody2D rb;
 	EntityLook Look;
 
+	Transform transform;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
 		player = GameObject.FindGameObjectWithTag("Player").transform;
 		rb = animator.GetComponent<Rigidbody2D>();
 		Look = animator.GetComponent<EntityLook>();
-
+		transform = animator.GetComponent<Transform>();
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -27,8 +28,8 @@ public class Mush : StateMachineBehaviour
 		Look.LookAtPlayer();
 
 		Vector2 target = new Vector2(player.position.x, rb.position.y);
-		Vector2 newPos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
-		rb.MovePosition(newPos);
+		
+		transform.position =  Vector2.MoveTowards(rb.position, target, 0.3f* Time.fixedDeltaTime);
         float Dist=Vector2.Distance(player.position, rb.position);
         
 		if (Dist <= attackRange)
