@@ -6,21 +6,40 @@ using UnityEngine.UI;
 public class Pause : MonoBehaviour
 {
     [SerializeField] GameObject pausepanel;
+    private bool pauseOpen = false;
 
     private void Awake()
     {
-        pausepanel.SetActive(false);
+        pausepanel.SetActive(pauseOpen);
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            switch (pauseOpen)
+            {
+                case false:
+                    SetPause();
+                    break;
+                case true:
+                    PauseOff();
+                    break;
+            }
+        }
     }
 
     public void SetPause()
     {
-        pausepanel.SetActive(true);
-        Time.timeScale = 0;
+        pauseOpen = !pauseOpen;
+        pausepanel.SetActive(pauseOpen);
+        Time.timeScale = 0f;
     }
 
     public void PauseOff()
     {
-        pausepanel.SetActive(false);
-        Time.timeScale = 1;
+        pauseOpen = !pauseOpen;
+        pausepanel.SetActive(pauseOpen);
+        Time.timeScale = 1f;
     }
 }

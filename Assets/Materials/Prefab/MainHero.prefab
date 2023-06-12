@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &358394730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 358394731}
+  m_Layer: 0
+  m_Name: ThrowPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &358394731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358394730}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.163, y: -0.022, z: 0.017135713}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1739165687008560892}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1739165687008560899
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,9 +43,11 @@ GameObject:
   - component: {fileID: 1739165687008560889}
   - component: {fileID: 1739165687008560888}
   - component: {fileID: 1739165687008560895}
-  - component: {fileID: 1739165687008560894}
   - component: {fileID: 1739165687008560890}
-  m_Layer: 0
+  - component: {fileID: 2129675040}
+  - component: {fileID: 2129675034}
+  - component: {fileID: 2129675045}
+  m_Layer: 7
   m_Name: MainHero
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -28,12 +61,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1739165687008560899}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.17800003, y: 0.06699997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1739165687204319427}
+  - {fileID: 358394731}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -83,7 +117,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.21, y: 0.38}
+  m_Size: {x: 0.41, y: 0.19}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -98,7 +132,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1739165687008560899}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 455d86054c067bc41807daea731bd068, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -107,7 +141,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.21, y: 0.38}
-    newSize: {x: 0.21, y: 0.38}
+    newSize: {x: 0.41, y: 0.19}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -131,12 +165,41 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 455d86054c067bc41807daea731bd068, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!95 &1739165687008560894
+--- !u!114 &1739165687008560890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739165687008560899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e2b5c638de765f4981bf2189df37cc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  jumpForce: 4
+  health: 100
+  damage: 50
+  attackRange: 0.1
+  pointsCount: 1000
+  DashImpulse: 2
+  PointDisplay: {fileID: 0}
+  attackPos: {fileID: 1739165687204319427}
+  slider: {fileID: 0}
+  Enemy:
+    serializedVersion: 2
+    m_Bits: 8
+  dashKey: 304
+  DashAccses: 0
+  DoubleJumpAccses: 0
+  isFlipped: 1
+--- !u!95 &2129675040
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -157,7 +220,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1739165687008560890
+--- !u!114 &2129675034
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,21 +229,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1739165687008560899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e2b5c638de765f4981bf2189df37cc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b676cbd341a5cd47814075b8b48d650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  jumpForce: 2
-  health: 100
-  damage: 1
-  attackRange: 0.03
-  "points\u0421ount": 0
-  PointDisplay: {fileID: 0}
-  attackPos: {fileID: 1739165687204319427}
-  slider: {fileID: 0}
-  Enemy:
-    serializedVersion: 2
-    m_Bits: 8
+  Alarm: {fileID: 0}
+  shop: {fileID: 0}
+--- !u!114 &2129675045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739165687008560899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac4dae71e85c244bbc5e7ba0aa8d7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 2129675040}
+  ThrowPos: {fileID: 358394731}
+  knife: {fileID: 1026330211106391614, guid: 5d8fa4915a5615e43807e8c4b78cd7d6, type: 3}
+  cam: {fileID: 0}
 --- !u!1 &1739165687204319426
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +259,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1739165687204319427}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +274,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1739165687204319426}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.149, y: -0.033, z: 0.107285194}
+  m_LocalPosition: {x: 0.181, y: -0.012, z: 0.107285194}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -16,11 +16,13 @@ public class Enemy : MonoBehaviour
     {
         anim = GetComponent<Animator>();
     }
+
     public void TakeDamage(int damage)
     {
         if (health > 0)
         {
             health -= damage;
+            gameObject.GetComponent<HpEnemy>().UpdateHealEnemy();
             anim.SetTrigger("Hurt");
         }
         if (health <= 0)
@@ -37,7 +39,8 @@ public class Enemy : MonoBehaviour
 
     public void Destroyed()
     {
-        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(effect, 4f);
         Instantiate(Point, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }

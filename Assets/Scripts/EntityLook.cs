@@ -5,27 +5,34 @@ using UnityEngine;
 public class EntityLook : MonoBehaviour
 {
 
-	public Transform player;
+    private Transform player;
 
-	public bool isFlipped = true;
+    public bool isFlipped = true;
 
-	public void LookAtPlayer()
-	{
-		Vector3 flipped = transform.localScale;
-		flipped.z *= -1f;
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 
-		if (transform.position.x > player.position.x && !isFlipped)
-		{
-			transform.localScale = flipped;
-			transform.Rotate(0f, 180f, 0f);
-			isFlipped = true;
-		}
-		else if (transform.position.x < player.position.x && isFlipped)
-		{
-			transform.localScale = flipped;
-			transform.Rotate(0f, 180f, 0f);
-			isFlipped = false;
-		}
-	}
+    public void LookAtPlayer()
+    {
+        Vector3 flipped = transform.localScale;
+        flipped.z *= -1f;
+
+        if (transform.position.x > player.position.x && !isFlipped)
+        {
+            transform.localScale = flipped;
+            transform.Rotate(0f, 180f, 0f);
+            transform.GetChild(0).transform.Rotate(0f, 180f, 0f);
+            isFlipped = true;
+        }
+        else if (transform.position.x < player.position.x && isFlipped)
+        {
+            transform.localScale = flipped;
+            transform.Rotate(0f, 180f, 0f);
+            transform.GetChild(0).transform.Rotate(0f, 180f, 0f);
+            isFlipped = false;
+        }
+    }
 
 }

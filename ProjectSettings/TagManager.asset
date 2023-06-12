@@ -9,6 +9,8 @@ TagManager:
   - UI
   - point
   - healthPotion
+  - platform
+  - barrel
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - UI
   - Points
   - Player
-  - 
+  - door
   - 
   - 
   - 

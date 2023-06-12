@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 788706202474099891}
   m_Layer: 0
   m_Name: Platform_fly
-  m_TagString: Untagged
+  m_TagString: platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -163,22 +163,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: -30.682552
+      value: 4.0168204
+      inSlope: 0.00010579391
+      outSlope: 0.00010579391
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: 191.81671
+      value: 4.0403595
+      inSlope: 0.00010579391
+      outSlope: 0.00010579391
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
