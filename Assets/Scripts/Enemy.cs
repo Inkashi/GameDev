@@ -6,34 +6,39 @@ using UnityEngine.UI;
 public class Enemy : MonoBehaviour
 {
     public int health;
-    
+
     public GameObject deathEffect;
     public GameObject Point;
-    
-    public Animator animator;
 
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
     public void TakeDamage(int damage)
     {
-        if (health >0) 
+        if (health > 0)
         {
-        health -= damage;
-        animator.SetTrigger("Hurt");
+            health -= damage;
+            anim.SetTrigger("Hurt");
         }
         if (health <= 0)
         {
             Die();
         }
     }
-    void Die() 
+    void Die()
     {
-            GetComponent<Rigidbody2D>().bodyType= RigidbodyType2D.Static;
-            GetComponent<Collider2D>().enabled = false;
-            animator.SetBool("IsDead", true);
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        GetComponent<Collider2D>().enabled = false;
+        anim.SetBool("IsDead", true);
     }
 
-    public void Destroyed() {
-          Instantiate(deathEffect, transform.position, Quaternion.identity);
-             Instantiate(Point, transform.position, Quaternion.identity);
-             Destroy(gameObject);
+    public void Destroyed()
+    {
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Instantiate(Point, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

@@ -15,4 +15,14 @@ public class MainMenuButton : MonoBehaviour
         Debug.Log("Game is close");
         Application.Quit();
     }
+
+    public void settings()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+    }
+
+    public void mainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
 }
