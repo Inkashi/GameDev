@@ -15,7 +15,7 @@ public class Heroknife : MonoBehaviour
 
        void OnTriggerEnter2D(Collider2D collision) {        
          Collider2D Enemyes = Physics2D.OverlapCircle(transform.position, 0.3f, Enemy);
-         Collider2D Playe = Physics2D.OverlapCircle(transform.position, 0.3f, Player);
+         Collider2D Playe = Physics2D.OverlapCircle(transform.position, 0.1f, Player);
 
             if (Enemyes != null)  {
             Enemyes.GetComponent<Enemy>().TakeDamage(attackDamage);
