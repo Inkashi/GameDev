@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1026330211106391613}
   - component: {fileID: 1026330211106391612}
   - component: {fileID: 1026330211106391615}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: knife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1026330211106391615
 MonoBehaviour:
   m_ObjectHideFlags: 0

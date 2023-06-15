@@ -22,7 +22,6 @@ public class Enemy : MonoBehaviour
         if (health > 0)
         {
             health -= damage;
-            gameObject.GetComponent<HpEnemy>().UpdateHealEnemy();
             anim.SetTrigger("Hurt");
         }
         if (health <= 0)

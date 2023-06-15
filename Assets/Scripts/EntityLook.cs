@@ -23,14 +23,14 @@ public class EntityLook : MonoBehaviour
         {
             transform.localScale = flipped;
             transform.Rotate(0f, 180f, 0f);
-            transform.GetChild(0).transform.Rotate(0f, 180f, 0f);
+            transform.Find("hpbar").gameObject.transform.Rotate(0f, 180f, 0f);
             isFlipped = true;
         }
         else if (transform.position.x < player.position.x && isFlipped)
         {
             transform.localScale = flipped;
             transform.Rotate(0f, 180f, 0f);
-            transform.GetChild(0).transform.Rotate(0f, 180f, 0f);
+            transform.Find("hpbar").gameObject.transform.Rotate(0f, 180f, 0f);
             isFlipped = false;
         }
     }

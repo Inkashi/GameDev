@@ -6,9 +6,11 @@ public class HpEnemy : MonoBehaviour
 {
     public SpriteRenderer spr;
     public Sprite[] sprites;
+    private int hpenemy;
     // Start is called before the first frame update
     void Start()
     {
+        hpenemy = gameObject.GetComponent<Enemy>().health;
         spr.sprite = sprites[9];
     }
 
@@ -21,7 +23,8 @@ public class HpEnemy : MonoBehaviour
         }
         else
         {
-            spr.sprite = sprites[heal / 10];
+            int procenthp = (heal * 100) / hpenemy;
+            spr.sprite = sprites[procenthp / 10];
         }
     }
 }

@@ -11,6 +11,7 @@ public class ChunkPlace : MonoBehaviour
     public Chunk[] ChunkPrefabs;
     public Chunk FirstChunk;
     public bool ChangedSpawnobj = false;
+    private bool ActiveGenerator = true;
 
     private List<Chunk> spawnedChunks = new List<Chunk>();
 
@@ -22,7 +23,7 @@ public class ChunkPlace : MonoBehaviour
 
     void Update()
     {
-        if (Player.position.x > spawnedChunks[spawnedChunks.Count - 1].end.position.x - 5)
+        if (Player.position.x > spawnedChunks[spawnedChunks.Count - 1].end.position.x - 5 && ActiveGenerator)
         {
             SpawnChunk();
         }
@@ -51,6 +52,11 @@ public class ChunkPlace : MonoBehaviour
         {
             newChunk.transform.position += new Vector3(Random.Range(0, xcoord), Random.Range(-ycoord, ycoord), 0);
         }
+        else if (newChunk.tag == "BossChunk")
+        {
+            newChunk.transform.position = spawnedChunks[spawnedChunks.Count - 1].end.position - newChunk.begin.localPosition;
+            ActiveGenerator = false;
+        }
         spawnedChunks.Add(newChunk);
         if (spawnedChunks.Count > 20)
         {
@@ -61,7 +67,7 @@ public class ChunkPlace : MonoBehaviour
 
     private void respawn()
     {
-        Player.transform.position = new Vector3(spawnedChunks[0].begin.position.x + 2, spawnedChunks[0].begin.position.y + 2);
+        Player.transform.position = new Vector3(spawnedChunks[1].begin.position.x + 2, spawnedChunks[1].begin.position.y + 2);
     }
 
     private Chunk GetRandomChunk()

@@ -11,6 +11,9 @@ TagManager:
   - healthPotion
   - platform
   - barrel
+  - BossDoor
+  - BossChunk
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -21,9 +24,9 @@ TagManager:
   - Points
   - Player
   - door
-  - 
-  - 
-  - 
+  - platform
+  - Boss
+  - Knife
   - 
   - 
   - 

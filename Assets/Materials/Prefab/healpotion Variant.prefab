@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8098774248497497997, guid: 47dee12edec12124097628ed5d4127d2, type: 3}
       propertyPath: m_Name
-      value: healpotion
+      value: healpotion Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8098774248497497997, guid: 47dee12edec12124097628ed5d4127d2, type: 3}
       propertyPath: m_TagString

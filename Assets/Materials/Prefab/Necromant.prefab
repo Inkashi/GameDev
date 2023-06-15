@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1818633284}
   - component: {fileID: 1818633283}
   m_Layer: 0
-  m_Name: barra de vida (blood) 576x320_0 (1)
+  m_Name: hpbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,9 +70,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 80790987
+  m_SortingLayer: 1
+  m_SortingOrder: 12
   m_Sprite: {fileID: -132069821, guid: 0b9f34a50666be74990bd9d7a9a79b44, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -163,9 +163,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 80790987
+  m_SortingLayer: 1
+  m_SortingOrder: 12
   m_Sprite: {fileID: 71190321, guid: b1964c326464c2f40a18a0729687fbb6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
