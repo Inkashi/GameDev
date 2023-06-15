@@ -10,6 +10,7 @@ public class ChunkPlace : MonoBehaviour
     public Transform Player;
     public Chunk[] ChunkPrefabs;
     public Chunk FirstChunk;
+    public bool ChangedSpawnobj = false;
 
     private List<Chunk> spawnedChunks = new List<Chunk>();
 
@@ -27,16 +28,31 @@ public class ChunkPlace : MonoBehaviour
         }
         else if (Player.position.y < spawnedChunks[0].begin.position.y - 10)
         {
+            Player.GetComponent<HeroMovement>().TakeDamage(10);
             respawn();
         }
     }
 
     private void SpawnChunk()
     {
+        float ycoord = 0.5f;
+        float xcoord = 0.3f;
+        if (Player.GetComponent<HeroMovement>().DoubleJumpAccses == true)
+        {
+            ycoord *= 2;
+        }
+        if (Player.GetComponent<HeroMovement>().DashAccses == true)
+        {
+            xcoord *= 2;
+        }
         Chunk newChunk = Instantiate(GetRandomChunk());
         newChunk.transform.position = spawnedChunks[spawnedChunks.Count - 1].end.position - newChunk.begin.localPosition;
+        if ((newChunk.tag == "platform" || spawnedChunks[spawnedChunks.Count - 1].tag == "platform") && ChangedSpawnobj)
+        {
+            newChunk.transform.position += new Vector3(Random.Range(0, xcoord), Random.Range(-ycoord, ycoord), 0);
+        }
         spawnedChunks.Add(newChunk);
-        if (spawnedChunks.Count > 10)
+        if (spawnedChunks.Count > 20)
         {
             Destroy(spawnedChunks[0].gameObject);
             spawnedChunks.RemoveAt(0);
@@ -66,5 +82,10 @@ public class ChunkPlace : MonoBehaviour
             }
         }
         return ChunkPrefabs[ChunkPrefabs.Length - 1];
+    }
+
+    public void ChangeSpawnMethod()
+    {
+        ChangedSpawnobj = !ChangedSpawnobj;
     }
 }

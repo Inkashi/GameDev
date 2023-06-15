@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 358394731}
-  - component: {fileID: 358394732}
   m_Layer: 0
   m_Name: ThrowPoint
   m_TagString: Untagged
@@ -32,21 +31,6 @@ Transform:
   m_Father: {fileID: 1739165687008560892}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &358394732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358394730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ac4dae71e85c244bbc5e7ba0aa8d7a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ThrowPos: {fileID: 358394731}
-  knife: {fileID: 1026330211106391614, guid: 5d8fa4915a5615e43807e8c4b78cd7d6, type: 3}
-  cam: {fileID: 0}
 --- !u!1 &1739165687008560899
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,6 +46,7 @@ GameObject:
   - component: {fileID: 1739165687008560890}
   - component: {fileID: 2129675040}
   - component: {fileID: 2129675034}
+  - component: {fileID: 2129675045}
   m_Layer: 7
   m_Name: MainHero
   m_TagString: Player
@@ -249,6 +234,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Alarm: {fileID: 0}
   shop: {fileID: 0}
+--- !u!114 &2129675045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739165687008560899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac4dae71e85c244bbc5e7ba0aa8d7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 2129675040}
+  ThrowPos: {fileID: 358394731}
+  knife: {fileID: 1026330211106391614, guid: 5d8fa4915a5615e43807e8c4b78cd7d6, type: 3}
+  cam: {fileID: 0}
 --- !u!1 &1739165687204319426
 GameObject:
   m_ObjectHideFlags: 0

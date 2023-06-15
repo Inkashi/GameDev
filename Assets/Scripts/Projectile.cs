@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -9,26 +10,31 @@ public class Projectile : MonoBehaviour
     public int attackDamage = 10;
     public float speed = 10f;
     public LayerMask player;
+    public GameObject ExlopeEffect;
 
     Transform pl;
-    
-    
-    void Start() {
-         pl = GameObject.FindGameObjectWithTag("Player").transform;
+
+
+    void Start()
+    {
+        pl = GameObject.FindGameObjectWithTag("Player").transform;
     }
-    void Update() {
+    void Update()
+    {
 
         transform.Translate(Vector2.up * speed * Time.deltaTime);
     }
 
-  
-    void OnCollisionEnter2D(Collision2D collision) {        
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
         Collider2D Player = Physics2D.OverlapCircle(transform.position, Range, player);
-        if (Player != null) 
+        if (Player != null)
         {
-        Player.GetComponent<HeroMovement>().TakeDamage(attackDamage);
+            Player.GetComponent<HeroMovement>().TakeDamage(attackDamage);
         }
         //Destroy(effect,3f);
+        Instantiate(ExlopeEffect, gameObject.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 

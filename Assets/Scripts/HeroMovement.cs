@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class HeroMovement : MonoBehaviour
 {
@@ -22,11 +23,13 @@ public class HeroMovement : MonoBehaviour
     public KeyCode dashKey = KeyCode.LeftShift;
     public bool DashAccses = false;
     public bool DoubleJumpAccses = false;
+    public bool ThrowAccses = true;
 
     //��������� ��������
     private Animator anim;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
+    private Collider2D heroColl;
     public static Transform tranform;
     private bool Attacking = false;
     private bool Recharged = true;
@@ -38,6 +41,7 @@ public class HeroMovement : MonoBehaviour
 
     private void Start()
     {
+        transform.position = new Vector2(52.332f, -2.572f);
         SetMaxHealth(health);
     }
     private void FixedUpdate()
@@ -74,6 +78,7 @@ public class HeroMovement : MonoBehaviour
 
     private void Awake()
     {
+        heroColl = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -86,7 +91,6 @@ public class HeroMovement : MonoBehaviour
         if (onGround) State = States.run;
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
-
         if (Input.GetAxis("Horizontal") > 0 && !isFlipped)
         {
             Flip();
@@ -95,7 +99,6 @@ public class HeroMovement : MonoBehaviour
         {
             Flip();
         }
-
     }
     private void Flip()
     {
@@ -118,8 +121,8 @@ public class HeroMovement : MonoBehaviour
 
     private void CheckGround()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.3f);
-        onGround = collider.Length > 1;
+        RaycastHit2D hitground = Physics2D.Raycast(transform.position, new Vector2(0, -1), 0.3f, LayerMask.GetMask("Default"));
+        onGround = hitground;
         if (!onGround)
         {
             State = States.jump;
@@ -133,8 +136,14 @@ public class HeroMovement : MonoBehaviour
         Collider2D[] Enemyes = Physics2D.OverlapCircleAll(attackPos.position, attackRange, Enemy);
         foreach (Collider2D enemy in Enemyes)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(damage);
-            Debug.Log("Eneme has " + enemy.GetComponent<Enemy>().health);
+            if (enemy.tag == "barrel")
+            {
+                enemy.GetComponent<BarrelScript>().TakeDamage(damage);
+            }
+            else
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(damage);
+            }
         }
     }
 
@@ -165,6 +174,7 @@ public class HeroMovement : MonoBehaviour
     void Die()
     {
         Destroy(gameObject);
+        GetComponent<DieMenu>().showDiemenu();
     }
 
     private States State
@@ -202,6 +212,18 @@ public class HeroMovement : MonoBehaviour
             Dashcharged = false;
             StartCoroutine(DashCoolDown());
         }
+        Collider2D[] Enemyes = Physics2D.OverlapCircleAll(tranform.position, 1, Enemy);
+        foreach (Collider2D enemy in Enemyes)
+        {
+            StartCoroutine(IgnoreCollider(enemy));
+        }
+    }
+
+    private IEnumerator IgnoreCollider(Collider2D other)
+    {
+        Physics2D.IgnoreCollision(heroColl, other, true);
+        yield return new WaitForSeconds(0.1f);
+        Physics2D.IgnoreCollision(heroColl, other, false);
     }
 
     private IEnumerator DashCoolDown()
@@ -237,7 +259,6 @@ public class HeroMovement : MonoBehaviour
                 health += Random.Range(10, 40);
                 Destroy(other.gameObject);
                 break;
-
         }
     }
     public void SetHealth(int health)

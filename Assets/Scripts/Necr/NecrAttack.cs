@@ -8,7 +8,7 @@ public class NecrAttack : MonoBehaviour
     Transform player;
     private Transform Necr;
     public GameObject projectile;
-    
+
     private float projectileForce = 5f;
     public Transform AttackPoint;
     Animator anim;
@@ -26,24 +26,24 @@ public class NecrAttack : MonoBehaviour
     void Update()
     {
         Look.LookAtPlayer();
-        float Dist=Vector2.Distance(player.position, Necr.position);
+        float Dist = Vector2.Distance(player.position, Necr.position);
         anim.SetFloat("AgrRange", Dist);
-        Debug.Log(Dist);
 
     }
-     void FixedUpdate() {
-        Vector2 lookDir = player.position - AttackPoint.position; 
+    void FixedUpdate()
+    {
+        Vector2 lookDir = player.position - AttackPoint.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
         AttackPoint.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
-     }
-     void Attack() 
-     {
+    }
+    void Attack()
+    {
         GameObject Project = Instantiate(projectile, AttackPoint.position, AttackPoint.rotation);
         // Transform rproject = Project.GetComponent<Transform>();
         // rproject.Translate(Vector2.up * projectileForce *Time.deltaTime);
         // Rigidbody2D rproject = Project.GetComponent<Rigidbody2D>();
         // rproject.AddForce(AttackPoint.up * projectileForce, ForceMode2D.Impulse);
-        
-     }
-    
+
+    }
+
 }

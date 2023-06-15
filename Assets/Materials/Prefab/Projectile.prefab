@@ -164,3 +164,4 @@ MonoBehaviour:
   player:
     serializedVersion: 2
     m_Bits: 128
+  ExlopeEffect: {fileID: 9108965419729238897, guid: 6415aeec51c1ac14882dd02e264dbfb9, type: 3}
