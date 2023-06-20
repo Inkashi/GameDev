@@ -13,7 +13,7 @@ public class BarrelScript : MonoBehaviour
         if (health <= 0)
         {
             Instantiate(healthpotion, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

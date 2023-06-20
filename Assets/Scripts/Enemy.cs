@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Enemy : MonoBehaviour
 {
     public int health;
-
+    public bool damageActive = true;
     public GameObject deathEffect;
     public GameObject Point;
 
@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (health > 0)
+        if (health > 0 && damageActive)
         {
             health -= damage;
             anim.SetTrigger("Hurt");
@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
+        gameObject.GetComponent<HpEnemy>().UpdateHealEnemy();
     }
     void Die()
     {

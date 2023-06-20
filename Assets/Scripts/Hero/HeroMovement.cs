@@ -12,29 +12,29 @@ public class HeroMovement : MonoBehaviour
     public int damage = 10;
     public float attackRange;
     public int pointsCount = 0;
-    public float DashImpulse = 10f;
 
     [Header("InitObjects")]
     public TextMeshProUGUI PointDisplay;
     public Transform attackPos;
     public Slider slider;
+    public GameObject JumpEffect;
     public LayerMask Enemy;
     public bool DashAccses = false;
     public bool DoubleJumpAccses = false;
     public bool ThrowAccses = false;
-    public GameObject JumpEffect;
 
     //Приватные элементы
     private Animator anim;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Collider2D heroColl;
-    public static Transform tranform;
+    private Transform tranform;
+    private float DashImpulse = 2f;
+    private int DoubleJumpCharged = 0;
     private bool Attacking = false;
     private bool Recharged = true;
     private bool onGround = false;
     private bool Dashcharged = true;
-    private int DoubleJumpCharged = 0;
     private bool isFlipped = true;
     private bool DamageCD = false;
     private KeyCode dashKey = KeyCode.LeftShift;
@@ -271,29 +271,17 @@ public class HeroMovement : MonoBehaviour
 
     private IEnumerator DamageCoolDown()
     {
-        SpriteRenderer[] srs = GetComponentsInChildren<SpriteRenderer>();
-
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
-            foreach (SpriteRenderer sr in srs)
-            {
-                Color c = sr.color;
-                c.a = 0;
-                sr.color = c;
-            }
-
+            Color c = sprite.color;
+            c.a = 0;
+            sprite.color = c;
             yield return new WaitForSeconds(.1f);
-
-            foreach (SpriteRenderer sr in srs)
-            {
-                Color c = sr.color;
-                c.a = 1;
-                sr.color = c;
-            }
-
+            c = sprite.color;
+            c.a = 1;
+            sprite.color = c;
             yield return new WaitForSeconds(.1f);
         }
-        yield return new WaitForSeconds(1f);
         DamageCD = false;
     }
 

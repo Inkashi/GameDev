@@ -9,18 +9,17 @@ public class BossWakeUp : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-       player = GameObject.FindGameObjectWithTag("Player").transform;
-       Boss = animator.GetComponent<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        Boss = animator.GetComponent<Transform>();
     }
 
-    
+
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float Dist = Vector2.Distance(player.position, Boss.position);
-        Debug.Log(Dist);
-        if (Dist< 1f)
-         {
-            animator.SetBool("WakeUp",true);
+        if (Dist < 1f)
+        {
+            animator.SetBool("WakeUp", true);
         }
     }
 

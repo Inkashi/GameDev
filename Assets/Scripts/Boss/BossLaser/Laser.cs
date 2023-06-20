@@ -16,4 +16,11 @@ public class Laser : MonoBehaviour
         }
 
     }
+     private void OnTriggerStay2D(Collider2D collision) {
+        if(collision.name == "MainHero") 
+        {
+            collision.GetComponent<HeroMovement>().TakeDamage(LaserDamage);
+        }
+
+    }
 }

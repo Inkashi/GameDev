@@ -11,7 +11,7 @@ public class HpEnemy : MonoBehaviour
     void Start()
     {
         hpenemy = gameObject.GetComponent<Enemy>().health;
-        spr.sprite = sprites[9];
+        spr.sprite = sprites[10];
     }
 
     public void UpdateHealEnemy()

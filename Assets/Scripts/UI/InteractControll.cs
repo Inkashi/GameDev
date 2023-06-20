@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +7,12 @@ public class InteractControll : MonoBehaviour
 
     public GameObject Alarm;
     public GameObject shop;
+    public TextMeshProUGUI PriceHeal;
+    int pricehp;
+    public TextMeshProUGUI PriceDamage;
+    int pricedm = 10;
+    public TextMeshProUGUI DamageInfo;
+    int countdm = 0;
     private bool ArchontNear = false;
     private bool paused = false;
     private bool BossDoorNear = false;
@@ -30,13 +33,17 @@ public class InteractControll : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.E) && BossDoorNear)
         {
             Camera.main.GetComponent<SaveLoadScript>().SaveGame();
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(4);
         }
     }
 
     public void shopwindow()
     {
         shop.SetActive(true);
+        pricehp = Mathf.RoundToInt(((100 - gameObject.GetComponent<HeroMovement>().health) * 0.5f));
+        PriceHeal.text = pricehp.ToString();
+        PriceDamage.text = pricedm.ToString();
+        DamageInfo.text = "Damage + 10 (" + countdm.ToString() + "/5)";
         Time.timeScale = 0f;
     }
 
@@ -79,18 +86,24 @@ public class InteractControll : MonoBehaviour
         switch (name)
         {
             case "BuyHeal":
-                if (PlayerPrefs.GetInt("points") >= 10 && GetComponent<HeroMovement>().health < 100)
+                if (PlayerPrefs.GetInt("points") >= pricehp && GetComponent<HeroMovement>().health < 100)
                 {
-                    GetComponent<HeroMovement>().health += 10;
-                    gameObject.GetComponent<HeroMovement>().SetPoint(10);
+                    GetComponent<HeroMovement>().health = 100;
+                    gameObject.GetComponent<HeroMovement>().SetPoint(pricehp);
+                    pricehp = 0;
+                    PriceHeal.text = pricehp.ToString();
                 }
                 break;
             case "UpgradeDamage":
-                if (PlayerPrefs.GetInt("points") >= 12)
+                if (PlayerPrefs.GetInt("points") >= pricedm)
                 {
-                    gameObject.GetComponent<HeroMovement>().damage += 5;
-                    gameObject.GetComponent<HeroMovement>().SetPoint(12);
-                    if (gameObject.GetComponent<HeroMovement>().damage == 100)
+                    gameObject.GetComponent<HeroMovement>().damage += 10;
+                    gameObject.GetComponent<HeroMovement>().SetPoint(pricedm);
+                    countdm += 1;
+                    pricedm += 5;
+                    PriceDamage.text = pricedm.ToString();
+                    DamageInfo.text = "Damage + 10 (" + countdm.ToString() + "/5)";
+                    if (gameObject.GetComponent<HeroMovement>().damage == 70)
                     {
                         Transform temp_parent = button.transform.parent;
                         ShopSort(temp_parent);
@@ -98,9 +111,9 @@ public class InteractControll : MonoBehaviour
                 }
                 break;
             case "UnlockDoubleJump":
-                if (PlayerPrefs.GetInt("points") >= 50)
+                if (PlayerPrefs.GetInt("points") >= 0)
                 {
-                    gameObject.GetComponent<HeroMovement>().SetPoint(50);
+                    gameObject.GetComponent<HeroMovement>().SetPoint(0);
                     gameObject.GetComponent<HeroMovement>().DoubleJumpAccses = true;
                     Transform temp_parent = button.transform.parent;
                     ShopSort(temp_parent);
@@ -111,6 +124,7 @@ public class InteractControll : MonoBehaviour
                 {
                     gameObject.GetComponent<HeroMovement>().DashAccses = true;
                     gameObject.GetComponent<HeroMovement>().SetPoint(50);
+                    Debug.Log(button);
                     Transform temp_parent = button.transform.parent;
                     ShopSort(temp_parent);
                 }

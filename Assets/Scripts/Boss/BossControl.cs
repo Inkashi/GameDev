@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class BossControl : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class BossControl : MonoBehaviour
     private Transform player;
     public Slider slider;
     public bool isFlipped = true;
-
+    private bool Less= false;
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -17,6 +18,10 @@ public class BossControl : MonoBehaviour
     private void Update()
     {
         SetHealth(health);
+        if (health <3100 && !Less) {
+            StartCoroutine(Tele());
+            GetComponent<Boss>().Firstphase = false;
+        }
     }
     public void LookAtPlayer()
     {
@@ -36,7 +41,34 @@ public class BossControl : MonoBehaviour
             isFlipped = false;
         }
     }
+    private IEnumerator Tele()
+    {
+        SpriteRenderer srs = GetComponent<SpriteRenderer>();
 
+        Less = true;
+           for(int i = 0;i < 5 ; i++) { 
+                Color c = srs.color;
+                c.a -= 0.2f;
+                srs.color = c;
+                 yield return new WaitForSeconds(0.1f);
+         }
+         yield return new WaitForSeconds(0.4f);
+               Teleport();
+                for(int i = 0;i < 5 ; i++) { 
+                Color c = srs.color;
+                c.a += 0.2f;
+                srs.color = c;
+                 yield return new WaitForSeconds(0.1f);
+         }
+                
+        
+        
+              
+    }
+    public void Teleport()
+    {
+        transform.position = new Vector2(0.15f, -0.42f);
+    }
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -50,7 +82,7 @@ public class BossControl : MonoBehaviour
     void Die()
     {
         Debug.Log("Die");
-        //Смерть добавить
+       Destroy(this.gameObject);
     }
 
     public void SetHealth(int health)

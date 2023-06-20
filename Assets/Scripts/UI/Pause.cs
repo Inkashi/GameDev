@@ -23,7 +23,7 @@ public class Pause : MonoBehaviour
                     SetPause();
                     break;
                 case true:
-                    PauseOff();
+                    PauseOff(pausepanel.transform.GetChild(0));
                     break;
             }
         }
@@ -31,15 +31,16 @@ public class Pause : MonoBehaviour
 
     public void SetPause()
     {
+        Time.timeScale = 0f;
         pauseOpen = !pauseOpen;
         pausepanel.SetActive(pauseOpen);
-        Time.timeScale = 0f;
     }
 
-    public void PauseOff()
+    public void PauseOff(Transform button)
     {
         pauseOpen = !pauseOpen;
-        pausepanel.SetActive(pauseOpen);
+        Transform temp_parent = button.parent;
+        temp_parent.gameObject.SetActive(pauseOpen);
         Time.timeScale = 1f;
     }
 }

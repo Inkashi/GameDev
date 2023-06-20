@@ -7,12 +7,14 @@ using UnityEngine.UIElements;
 
 public class PauseButtons : MonoBehaviour
 {
+    public GameObject settings;
     public void Qquit()
     {
         SceneManager.LoadScene(0);
     }
     public void SettingsMenu()
     {
-        SceneManager.LoadScene(2);
+        settings.SetActive(true);
+        gameObject.SetActive(false);
     }
 }

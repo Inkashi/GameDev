@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButton : MonoBehaviour
 {
+    public static int PrevScene;
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
         Time.timeScale = 1f;
     }
 
@@ -19,11 +20,12 @@ public class MainMenuButton : MonoBehaviour
 
     public void settings()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        PrevScene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void mainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(PrevScene);
     }
 }

@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Traps : MonoBehaviour
 {
-    private int attackDamage = 10;
+    public int attackDamage = 10;
     private Animator anim;
+    Collider2D Hero;
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -20,8 +21,12 @@ public class Traps : MonoBehaviour
         if (other.tag == "Player")
         {
             anim.SetTrigger("HeroNear");
-            Debug.Log("¿È");
-            other.GetComponent<HeroMovement>().TakeDamage(attackDamage);
         }
+    }
+
+    public void HitHero()
+    {
+        Collider2D[] Enemyes = Physics2D.OverlapCircleAll(transform.position, 1f, LayerMask.GetMask("Player"));
+        Enemyes[0].GetComponent<HeroMovement>().TakeDamage(attackDamage);
     }
 }

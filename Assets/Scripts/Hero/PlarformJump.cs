@@ -6,8 +6,6 @@ using UnityEngine;
 public class PlarformJump : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private int player;
-    private int platforms;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
@@ -15,27 +13,25 @@ public class PlarformJump : MonoBehaviour
             jumpPlatform();
             rb.velocity = new Vector2(0f, -1f);
         }
-        else if (Input.GetButtonDown("Jump"))
-        {
-            jumpPlatform();
-        }
     }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        player = LayerMask.NameToLayer("Player");
-        platforms = LayerMask.NameToLayer("platform");
     }
     public void jumpPlatform()
     {
-        StartCoroutine(IgnoreCollider());
+        Collider2D[] Platforms = Physics2D.OverlapCircleAll(gameObject.transform.position, 1f, LayerMask.GetMask("platform"));
+        foreach (Collider2D p in Platforms)
+        {
+            StartCoroutine(IgnoreCollider(p.transform));
+        }
     }
 
-    private IEnumerator IgnoreCollider()
+    private IEnumerator IgnoreCollider(Transform platform)
     {
-        Physics2D.IgnoreLayerCollision(player, platforms, true);
+        platform.GetComponent<PlatformEffector2D>().rotationalOffset = 180;
         yield return new WaitForSeconds(0.3f);
-        Physics2D.IgnoreLayerCollision(player, platforms, false);
+        platform.GetComponent<PlatformEffector2D>().rotationalOffset = 0;
     }
 }
