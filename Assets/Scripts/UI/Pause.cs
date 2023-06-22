@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Pause : MonoBehaviour
 {
     [SerializeField] GameObject pausepanel;
+    public GameObject settings;
     private bool pauseOpen = false;
 
     private void Awake()
@@ -24,7 +25,14 @@ public class Pause : MonoBehaviour
                     SetPause();
                     break;
                 case true:
-                    PauseOff(pausepanel.transform.GetChild(0));
+                    if (settings.activeSelf == true)
+                    {
+                        PauseOff(settings.transform.GetChild(0));
+                    }
+                    else
+                    {
+                        PauseOff(pausepanel.transform.GetChild(0));
+                    }
                     break;
             }
         }
@@ -48,5 +56,16 @@ public class Pause : MonoBehaviour
     {
         SceneManager.LoadScene(4);
         Time.timeScale = 1f;
+    }
+
+    public void Qquit()
+    {
+        SceneManager.LoadScene(0);
+        pausepanel.SetActive(false);
+    }
+    public void SettingsMenu()
+    {
+        settings.SetActive(true);
+        pausepanel.SetActive(false);
     }
 }

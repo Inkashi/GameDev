@@ -2521,8 +2521,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1490601114}
-        m_TargetAssemblyTypeName: PauseButtons, Assembly-CSharp
+      - m_Target: {fileID: 1251658166}
+        m_TargetAssemblyTypeName: Pause, Assembly-CSharp
         m_MethodName: SettingsMenu
         m_Mode: 1
         m_Arguments:
@@ -4393,6 +4393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausepanel: {fileID: 1490601110}
+  settings: {fileID: 1196273639}
 --- !u!114 &1251658167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6605,8 +6606,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1490601114}
-        m_TargetAssemblyTypeName: PauseButtons, Assembly-CSharp
+      - m_Target: {fileID: 1251658166}
+        m_TargetAssemblyTypeName: Pause, Assembly-CSharp
         m_MethodName: Qquit
         m_Mode: 1
         m_Arguments:
