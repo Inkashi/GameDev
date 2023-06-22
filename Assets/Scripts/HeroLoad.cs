@@ -6,6 +6,6 @@ public class HeroLoad : MonoBehaviour
 {
     private void Start()
     {
-        Camera.main.GetComponent<SaveLoadScript>().LoadGame();
+        gameObject.GetComponent<SaveLoadScript>().LoadGame();
     }
 }

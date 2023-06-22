@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
@@ -11,7 +9,7 @@ public class SaveLoadScript : MonoBehaviour
     public GameObject Hero;
     private void Start()
     {
-        FilePath = Application.persistentDataPath + "/save.gamesave";
+        FilePath = Application.persistentDataPath + "/save.data";
     }
     public void SaveGame()
     {

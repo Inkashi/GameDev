@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79b3a750827f06340ba8c5e05fbd2124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
+  health: 40
   damageActive: 1
   deathEffect: {fileID: 8151065752147512079, guid: fd0c783f6a8be7941a3e1313c94c3118, type: 3}
   Point: {fileID: 8098774248497497997, guid: bf681db77fdc0cb439277d369e081e87, type: 3}

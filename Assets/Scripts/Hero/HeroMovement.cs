@@ -20,9 +20,9 @@ public class HeroMovement : MonoBehaviour
     public GameObject JumpEffect;
     public LayerMask Enemy;
     //Spells Accses
-    [HideInInspector] public bool DashAccses = false;
-    [HideInInspector] public bool DoubleJumpAccses = false;
-    [HideInInspector] public bool ThrowAccses = false;
+    public bool DashAccses = false;
+    public bool DoubleJumpAccses = false;
+    public bool ThrowAccses = false;
     private Animator anim;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
@@ -51,7 +51,7 @@ public class HeroMovement : MonoBehaviour
     private void Start()
     {
         SetPoint(0);
-        SetMaxHealth(health);
+        SetMaxHealth(100);
     }
     private void FixedUpdate()
     {
@@ -207,17 +207,13 @@ public class HeroMovement : MonoBehaviour
     {
         if (!DamageCD)
         {
+            health -= damage;
+            DamageAudio.Play();
+            DamageCD = true;
+            StartCoroutine(DamageCoolDown());
             if (health <= 0)
             {
                 Die();
-            }
-            else
-            {
-                health -= damage;
-                DamageAudio.Play();
-                DamageCD = true;
-                StartCoroutine(DamageCoolDown());
-
             }
         }
     }
@@ -297,6 +293,7 @@ public class HeroMovement : MonoBehaviour
         pointsCount = save.pointsCount;
         ThrowAccses = save.ThrowAccses;
         SetPoint(0);
+        SetHealth(health);
     }
     private IEnumerator JumpAttackCoolDown()
     {
@@ -353,14 +350,18 @@ public class HeroMovement : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             case "healthPotion":
-                if (health <= 90)
+                if (health >= 80)
                 {
                     health = 100;
                     Destroy(other.gameObject);
                 }
+                else if (health == 100)
+                {
+                }
                 else
                 {
                     health += 20;
+                    Destroy(other.gameObject);
                 }
                 break;
         }
