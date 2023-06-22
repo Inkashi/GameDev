@@ -14,6 +14,12 @@ TagManager:
   - BossDoor
   - BossChunk
   - Boss
+  - PauseButton
+  - BG_MUSIC_CREATED
+  - PAUSE_MENU
+  - exit
+  - flowers
+  - Eye
   layers:
   - Default
   - TransparentFX
@@ -27,7 +33,7 @@ TagManager:
   - platform
   - Boss
   - Knife
-  - 
+  - Eye
   - 
   - 
   - 

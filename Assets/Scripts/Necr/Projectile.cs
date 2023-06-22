@@ -33,7 +33,6 @@ public class Projectile : MonoBehaviour
         {
             Player.GetComponent<HeroMovement>().TakeDamage(attackDamage);
         }
-        //Destroy(effect,3f);
         Instantiate(ExlopeEffect, gameObject.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }

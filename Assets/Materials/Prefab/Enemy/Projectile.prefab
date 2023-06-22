@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1924277033493149346}
   - component: {fileID: 4354249481495698108}
   - component: {fileID: 6830020825385426589}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Range: 0.2
-  attackDamage: 10
+  attackDamage: 15
   speed: 4
   player:
     serializedVersion: 2

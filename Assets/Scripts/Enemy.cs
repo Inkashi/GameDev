@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     public bool damageActive = true;
     public GameObject deathEffect;
     public GameObject Point;
+    [SerializeField] private AudioSource DamageEnemyAudio;
+    [SerializeField] private AudioSource EnemyDieAudio;
 
     private Animator anim;
 
@@ -22,6 +24,7 @@ public class Enemy : MonoBehaviour
         if (health > 0 && damageActive)
         {
             health -= damage;
+            DamageEnemyAudio.Play();    
             anim.SetTrigger("Hurt");
         }
         if (health <= 0)
@@ -32,6 +35,7 @@ public class Enemy : MonoBehaviour
     }
     void Die()
     {
+        EnemyDieAudio.Play();
         GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         GetComponent<Collider2D>().enabled = false;
         anim.SetBool("IsDead", true);

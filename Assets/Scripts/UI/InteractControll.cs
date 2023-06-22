@@ -16,6 +16,15 @@ public class InteractControll : MonoBehaviour
     private bool ArchontNear = false;
     private bool paused = false;
     private bool BossDoorNear = false;
+    bool exitnear = false;
+    bool flowersnear = false;
+    GameObject flower;
+    [SerializeField] public AudioSource ShopAudio;
+    [SerializeField] private AudioSource DashShopAudio;
+    [SerializeField] private AudioSource DoobleJumpAudio;
+    [SerializeField] private AudioSource DamageShopAudio;
+    [SerializeField] private AudioSource HealAudio;
+    [SerializeField] private AudioSource KnifeShopAudio;
 
     // Start is called before the first frame update
     void Start()
@@ -35,11 +44,20 @@ public class InteractControll : MonoBehaviour
             Camera.main.GetComponent<SaveLoadScript>().SaveGame();
             SceneManager.LoadScene(4);
         }
+        else if (Input.GetKeyDown(KeyCode.E) && exitnear)
+        {
+            SceneManager.LoadScene(5);
+        }
+        else if (Input.GetKeyDown(KeyCode.E) && flowersnear)
+        {
+            flower.GetComponent<light>().useflower();
+        }
     }
 
     public void shopwindow()
     {
         shop.SetActive(true);
+        ShopAudio.Play();
         pricehp = Mathf.RoundToInt(((100 - gameObject.GetComponent<HeroMovement>().health) * 0.5f));
         PriceHeal.text = pricehp.ToString();
         PriceDamage.text = pricedm.ToString();
@@ -55,28 +73,63 @@ public class InteractControll : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Archont"))
+        switch (other.tag)
         {
-            Alarm.SetActive(true);
-            ArchontNear = true;
-        }
-        if (other.CompareTag("BossDoor"))
-        {
-            Alarm.SetActive(true);
-            BossDoorNear = true;
+            case "Archont":
+                {
+                    Alarm.SetActive(true);
+                    ArchontNear = true;
+                    break;
+                }
+            case "BossDoor":
+                {
+                    Alarm.SetActive(true);
+                    BossDoorNear = true;
+                    break;
+                }
+            case "exit":
+                {
+                    Alarm.SetActive(true);
+                    exitnear = true;
+                    break;
+                }
+            case "flowers":
+                {
+                    flower = other.gameObject;
+                    Alarm.SetActive(true);
+                    flowersnear = true;
+                    break;
+                }
         }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Archont"))
+        switch (other.tag)
         {
-            Alarm.SetActive(false);
-            ArchontNear = false;
-        }
-        if (other.CompareTag("BossDoor"))
-        {
-            Alarm.SetActive(false);
-            BossDoorNear = false;
+            case "Archont":
+                {
+                    Alarm.SetActive(false);
+                    ArchontNear = false;
+                    break;
+                }
+            case "BossDoor":
+                {
+                    Alarm.SetActive(false);
+                    BossDoorNear = false;
+                    break;
+                }
+            case "exit":
+                {
+                    Alarm.SetActive(false);
+                    exitnear = false;
+                    break;
+                }
+            case "flowers":
+                {
+                    Alarm.SetActive(false);
+                    flowersnear = false;
+                    break;
+                }
         }
     }
 
@@ -89,6 +142,7 @@ public class InteractControll : MonoBehaviour
                 if (PlayerPrefs.GetInt("points") >= pricehp && GetComponent<HeroMovement>().health < 100)
                 {
                     GetComponent<HeroMovement>().health = 100;
+                    HealAudio.Play();
                     gameObject.GetComponent<HeroMovement>().SetPoint(pricehp);
                     pricehp = 0;
                     PriceHeal.text = pricehp.ToString();
@@ -98,6 +152,7 @@ public class InteractControll : MonoBehaviour
                 if (PlayerPrefs.GetInt("points") >= pricedm)
                 {
                     gameObject.GetComponent<HeroMovement>().damage += 10;
+                    DamageShopAudio.Play();
                     gameObject.GetComponent<HeroMovement>().SetPoint(pricedm);
                     countdm += 1;
                     pricedm += 5;
@@ -115,6 +170,7 @@ public class InteractControll : MonoBehaviour
                 {
                     gameObject.GetComponent<HeroMovement>().SetPoint(0);
                     gameObject.GetComponent<HeroMovement>().DoubleJumpAccses = true;
+                    DoobleJumpAudio.Play();
                     Transform temp_parent = button.transform.parent;
                     ShopSort(temp_parent);
                 }
@@ -123,6 +179,7 @@ public class InteractControll : MonoBehaviour
                 if (PlayerPrefs.GetInt("points") >= 50)
                 {
                     gameObject.GetComponent<HeroMovement>().DashAccses = true;
+                    DashShopAudio.Play();
                     gameObject.GetComponent<HeroMovement>().SetPoint(50);
                     Debug.Log(button);
                     Transform temp_parent = button.transform.parent;
@@ -134,6 +191,7 @@ public class InteractControll : MonoBehaviour
                 {
                     gameObject.GetComponent<HeroMovement>().SetPoint(50);
                     gameObject.GetComponent<HeroMovement>().ThrowAccses = true;
+                    KnifeShopAudio.Play();
                     Transform temp_parent = button.transform.parent;
                     Destroy(temp_parent.gameObject);
                 }

@@ -77,12 +77,14 @@ public class ChunkPlace : MonoBehaviour
         {
             chanches_chunks.Add(ChunkPrefabs[i].Chance.Evaluate(Player.transform.position.x));
         }
+
         float temp_chunk = Random.Range(0, chanches_chunks.Sum());
         float sum = 0;
+
         for (int i = 0; i < chanches_chunks.Count; i++)
         {
             sum += chanches_chunks[i];
-            if (temp_chunk < sum)
+            if (temp_chunk <= sum)
             {
                 return ChunkPrefabs[i];
             }

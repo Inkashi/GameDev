@@ -6,24 +6,23 @@ public class Boss : MonoBehaviour
 {
 
     public Transform attackPoint;
-
     public Transform WindAttackPoint;
-
     public Transform ShootAttackPoint;
     public GameObject LaserBeam;
     public GameObject LightLaser;
-
     public GameObject Arm;
-
     public GameObject WindFlow;
     BossControl BossLook;
     private Animator anim;
-
     public bool Firstphase = true;
     public bool reverse = false;
     private float time = 0;
     private Transform player;
     private float angle;
+    [SerializeField] private AudioSource ShootAttckAudio;
+    [SerializeField] private AudioSource WindAttckAudio;
+    [SerializeField] private AudioSource LasAttckAudio;
+    [SerializeField] private AudioSource LightLasAttckAudio;
 
     int rand;
     private bool Recharge = true;
@@ -37,8 +36,10 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BossLook.LookAtPlayer();
-        time -= Time.deltaTime;
+        if (BossLook.IsDead != true)
+        {
+            BossLook.LookAtPlayer();
+        }
         if (Firstphase)
         {
             if (Recharge && player.position.y > transform.position.y + 0.4f)
@@ -85,6 +86,7 @@ public class Boss : MonoBehaviour
     {
         GetComponentInChildren<LightLaserControl>().attck();
         //Instantiate(LightLaser, attackPoint.position, attackPoint.rotation);
+        LightLasAttckAudio.Play();
 
     }
     void LasAttck()
@@ -94,6 +96,7 @@ public class Boss : MonoBehaviour
         Instantiate(LaserBeam, attackPoint.position, attackPoint.rotation);
         anim.ResetTrigger("Wind");
         anim.ResetTrigger("Laser");
+        LasAttckAudio.Play();
         anim.ResetTrigger("Arm");
 
     }
@@ -101,12 +104,14 @@ public class Boss : MonoBehaviour
     {
         Instantiate(WindFlow, WindAttackPoint.position, Quaternion.identity);
         anim.ResetTrigger("Wind");
+        WindAttckAudio.Play();
         anim.ResetTrigger("Laser");
         anim.ResetTrigger("Arm");
     }
     void ShootAttck()
     {
         Instantiate(Arm, ShootAttackPoint.position, ShootAttackPoint.rotation);
+        ShootAttckAudio.Play();
         anim.ResetTrigger("Wind");
         anim.ResetTrigger("Laser");
         anim.ResetTrigger("Arm");

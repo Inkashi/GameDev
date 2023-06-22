@@ -7,16 +7,31 @@ public class HpEnemy : MonoBehaviour
     public SpriteRenderer spr;
     public Sprite[] sprites;
     private int hpenemy;
-    // Start is called before the first frame update
     void Start()
     {
-        hpenemy = gameObject.GetComponent<Enemy>().health;
+        if (gameObject.tag == "Eye")
+        {
+            hpenemy = gameObject.GetComponent<EyeControll>().health;
+            Debug.Log("I have" + hpenemy);
+        }
+        else
+        {
+            hpenemy = gameObject.GetComponent<Enemy>().health;
+        }
         spr.sprite = sprites[10];
     }
 
     public void UpdateHealEnemy()
     {
-        int heal = gameObject.GetComponent<Enemy>().health;
+        int heal;
+        if (gameObject.tag == "Eye")
+        {
+            heal = gameObject.GetComponent<EyeControll>().health;
+        }
+        else
+        {
+            heal = gameObject.GetComponent<Enemy>().health;
+        }
         if (heal < 0)
         {
             spr.sprite = sprites[0];

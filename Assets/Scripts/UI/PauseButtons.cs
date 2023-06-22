@@ -11,6 +11,7 @@ public class PauseButtons : MonoBehaviour
     public void Qquit()
     {
         SceneManager.LoadScene(0);
+        gameObject.SetActive(false);
     }
     public void SettingsMenu()
     {

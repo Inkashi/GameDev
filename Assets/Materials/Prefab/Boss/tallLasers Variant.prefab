@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 610404961184601407, guid: 75b869bb2f47c364ba462a1cad63802b, type: 3}
       propertyPath: RotateSpeed
-      value: 75
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 610404961732535615, guid: 75b869bb2f47c364ba462a1cad63802b, type: 3}
       propertyPath: m_LocalScale.x

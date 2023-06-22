@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Pause : MonoBehaviour
@@ -41,6 +42,11 @@ public class Pause : MonoBehaviour
         pauseOpen = !pauseOpen;
         Transform temp_parent = button.parent;
         temp_parent.gameObject.SetActive(pauseOpen);
+        Time.timeScale = 1f;
+    }
+    public void tryAgain()
+    {
+        SceneManager.LoadScene(4);
         Time.timeScale = 1f;
     }
 }

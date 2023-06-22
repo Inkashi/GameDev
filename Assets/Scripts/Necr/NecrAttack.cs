@@ -8,6 +8,7 @@ public class NecrAttack : MonoBehaviour
     Transform player;
     private Transform Necr;
     public GameObject projectile;
+    [SerializeField] private AudioSource NecrAttackAudio;
 
     private float projectileForce = 5f;
     public Transform AttackPoint;
@@ -39,11 +40,7 @@ public class NecrAttack : MonoBehaviour
     void Attack()
     {
         GameObject Project = Instantiate(projectile, AttackPoint.position, AttackPoint.rotation);
-        // Transform rproject = Project.GetComponent<Transform>();
-        // rproject.Translate(Vector2.up * projectileForce *Time.deltaTime);
-        // Rigidbody2D rproject = Project.GetComponent<Rigidbody2D>();
-        // rproject.AddForce(AttackPoint.up * projectileForce, ForceMode2D.Impulse);
-
+        NecrAttackAudio.Play();
     }
 
 }

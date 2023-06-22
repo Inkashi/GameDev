@@ -19,25 +19,33 @@ public class HeroMovement : MonoBehaviour
     public Slider slider;
     public GameObject JumpEffect;
     public LayerMask Enemy;
-    public bool DashAccses = false;
-    public bool DoubleJumpAccses = false;
-    public bool ThrowAccses = false;
-
-    //Приватные элементы
+    //Spells Accses
+    [HideInInspector] public bool DashAccses = false;
+    [HideInInspector] public bool DoubleJumpAccses = false;
+    [HideInInspector] public bool ThrowAccses = false;
     private Animator anim;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Collider2D heroColl;
-    private Transform tranform;
     private float DashImpulse = 2f;
+    private float timer = 0;
     private int DoubleJumpCharged = 0;
     private bool Attacking = false;
     private bool Recharged = true;
     private bool onGround = false;
     private bool Dashcharged = true;
-    private bool isFlipped = true;
+    public bool isFlipped = true;
     private bool DamageCD = false;
+    private bool OnPause = false;
+    private bool IsDead = false;
     private KeyCode dashKey = KeyCode.LeftShift;
+    //Audio
+    [SerializeField] private AudioSource JumpAudio;
+    [SerializeField] private AudioSource DashAudio;
+    [SerializeField] private AudioSource PointAudio;
+    [SerializeField] private AudioSource DamageAudio;
+    [SerializeField] private AudioSource AttackAudio;
+    [SerializeField] private AudioSource DieAudio;
 
 
     private void Start()
@@ -51,31 +59,46 @@ public class HeroMovement : MonoBehaviour
     }
     private void Update()
     {
-        SetHealth(health);
-        if (onGround)
+        if (!IsDead)
         {
-            State = States.idle;
-            if (DoubleJumpAccses)
+            timer += Time.deltaTime;
+            SetHealth(health);
+            anim.SetBool("OnGround", onGround);
+            anim.SetFloat("Timer", timer);
+            if (Time.timeScale == 0)
             {
-                DoubleJumpCharged = 1;
+                OnPause = true;
             }
             else
             {
-                DoubleJumpCharged = 0;
+                OnPause = false;
             }
+            if (onGround)
+            {
+                State = States.idle;
+                if (DoubleJumpAccses)
+                {
+                    DoubleJumpCharged = 1;
+                }
+                else
+                {
+                    DoubleJumpCharged = 0;
+                }
+            }
+            if (Input.GetButton("Horizontal") && !OnPause)
+                Run();
+            if (Input.GetKeyDown(dashKey) && !OnPause)
+            {
+                if (DashAccses)
+                    Dash();
+            }
+            if (Input.GetButtonDown("Jump") && (onGround || DoubleJumpCharged > 0) && !OnPause)
+                Jump();
+            if (Input.GetButtonDown("Fire1") && !OnPause)
+                Attack();
         }
-        if (Input.GetButton("Horizontal"))
-            Run();
-        if (Input.GetKeyDown(dashKey))
-        {
-            if (DashAccses)
-                Dash();
-        }
-        if (Input.GetButtonDown("Jump") && (onGround || DoubleJumpCharged > 0))
-            Jump();
-        if (Input.GetButtonDown("Fire1"))
-            Attack();
     }
+
 
     private void Awake()
     {
@@ -83,7 +106,6 @@ public class HeroMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        tranform = GetComponent<Transform>();
         Recharged = true;
     }
 
@@ -101,12 +123,12 @@ public class HeroMovement : MonoBehaviour
             Flip();
         }
     }
-    private void Flip()
+    public void Flip()
     {
         isFlipped = !isFlipped;
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
-        tranform.localScale = theScale;
+        transform.localScale = theScale;
     }
 
     private void Jump()
@@ -118,6 +140,7 @@ public class HeroMovement : MonoBehaviour
         if (!onGround && DoubleJumpAccses)
         {
             GameObject effect = Instantiate(JumpEffect, transform.position, Quaternion.identity);
+            JumpAudio.Play();
             Destroy(effect, 3f);
         }
         DoubleJumpCharged--;
@@ -149,6 +172,10 @@ public class HeroMovement : MonoBehaviour
             {
                 enemy.GetComponent<BossControl>().TakeDamage(damage);
             }
+            else if (enemy.tag == "Eye")
+            {
+                enemy.GetComponent<EyeControll>().TakeDamage(damage);
+            }
             else
             {
                 enemy.GetComponent<Enemy>().TakeDamage(damage);
@@ -158,12 +185,21 @@ public class HeroMovement : MonoBehaviour
 
     private void Attack()
     {
-        if (Recharged)
+        if (timer < 0.6 && !OnPause)
         {
+            AttackAudio.Play();
+            anim.SetTrigger("ScndAttack");
+        }
+        if (Recharged && !OnPause)
+        {
+            timer = 0;
             anim.SetTrigger("Attack");
             Attacking = true;
             Recharged = false;
-            StartCoroutine(AttackCoolDown());
+            if (onGround)
+                StartCoroutine(AttackCoolDown());
+            else
+                StartCoroutine(JumpAttackCoolDown());
         }
     }
 
@@ -171,22 +207,33 @@ public class HeroMovement : MonoBehaviour
     {
         if (!DamageCD)
         {
-            health -= damage;
-
             if (health <= 0)
             {
                 Die();
             }
-            DamageCD = true;
-            StartCoroutine(DamageCoolDown());
+            else
+            {
+                health -= damage;
+                DamageAudio.Play();
+                DamageCD = true;
+                StartCoroutine(DamageCoolDown());
+
+            }
         }
     }
     void Die()
     {
-        Destroy(gameObject);
+        IsDead = true;
+        DieAudio.Play();
+        anim.SetTrigger("Die");
+        DamageCD = true;
         GetComponent<DieMenu>().showDiemenu();
     }
 
+    public void post_die()
+    {
+        Time.timeScale = 0;
+    }
     private States State
     {
         get { return (States)anim.GetInteger("State"); }
@@ -207,6 +254,7 @@ public class HeroMovement : MonoBehaviour
     {
         if (Dashcharged)
         {
+            DamageCD = true;
             anim.StopPlayback();
             anim.SetTrigger("Dash");
             rb.velocity = new Vector2(0, 0);
@@ -218,10 +266,11 @@ public class HeroMovement : MonoBehaviour
             {
                 rb.AddForce(Vector2.right * DashImpulse, ForceMode2D.Impulse);
             }
+            DashAudio.Play();
             Dashcharged = false;
             StartCoroutine(DashCoolDown());
         }
-        Collider2D[] Enemyes = Physics2D.OverlapCircleAll(tranform.position, 1, Enemy);
+        Collider2D[] Enemyes = Physics2D.OverlapCircleAll(transform.position, 1, Enemy);
         foreach (Collider2D enemy in Enemyes)
         {
             StartCoroutine(IgnoreCollider(enemy));
@@ -249,7 +298,11 @@ public class HeroMovement : MonoBehaviour
         ThrowAccses = save.ThrowAccses;
         SetPoint(0);
     }
-
+    private IEnumerator JumpAttackCoolDown()
+    {
+        yield return new WaitForSeconds(0.4f);
+        Recharged = true;
+    }
     private IEnumerator IgnoreCollider(Collider2D other)
     {
         Physics2D.IgnoreCollision(heroColl, other, true);
@@ -261,11 +314,13 @@ public class HeroMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         Dashcharged = true;
+        DamageCD = false;
     }
 
     private IEnumerator AttackCoolDown()
     {
-        yield return new WaitForSeconds(0.5f);
+        AttackAudio.Play();
+        yield return new WaitForSeconds(1f);
         Recharged = true;
     }
 
@@ -291,16 +346,21 @@ public class HeroMovement : MonoBehaviour
         {
             case "point":
                 PlayerPrefs.GetInt("points");
-                pointsCount += Random.Range(1, 10);
+                pointsCount += Random.Range(1, 20);
                 PlayerPrefs.SetInt("points", pointsCount);
+                PointAudio.Play();
                 PointDisplay.text = pointsCount.ToString();
                 Destroy(other.gameObject);
                 break;
             case "healthPotion":
-                if (health < 100)
+                if (health <= 90)
                 {
-                    health += 10;
+                    health = 100;
                     Destroy(other.gameObject);
+                }
+                else
+                {
+                    health += 20;
                 }
                 break;
         }
